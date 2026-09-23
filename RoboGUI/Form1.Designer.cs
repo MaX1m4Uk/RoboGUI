@@ -43,6 +43,7 @@
             startBroadcast.TabIndex = 0;
             startBroadcast.Text = "Start broadcast";
             startBroadcast.UseVisualStyleBackColor = true;
+            startBroadcast.Click += startBroadcast_Click;
             // 
             // stopBroadcast
             // 
@@ -52,6 +53,7 @@
             stopBroadcast.TabIndex = 1;
             stopBroadcast.Text = "Stop broadcast";
             stopBroadcast.UseVisualStyleBackColor = true;
+            stopBroadcast.Click += stopBroadcast_Click;
             // 
             // modeView
             // 
@@ -67,6 +69,7 @@
             videoView.Location = new Point(12, 12);
             videoView.Name = "videoView";
             videoView.Size = new Size(780, 302);
+            videoView.SizeMode = PictureBoxSizeMode.Zoom;
             videoView.TabIndex = 3;
             videoView.TabStop = false;
             // 

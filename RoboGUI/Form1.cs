@@ -10,13 +10,14 @@ namespace RoboGUI
     {
         TcpListener server = null;
         byte[] sizeBytes = new byte[4];
-        byte[] controlBytes = new byte[5];
+        byte[] controlBytes = new byte[7];
         Int32 port = 13000;
         IPAddress localAddr = IPAddress.Parse("127.0.0.1");
         Process pythonProcess;
         TcpClient client;
-        Int16 mode = 1, /* base view */ willContinue = 1 /* continue */, baseRotate = 0 /* base rotate */, 
-            flipHorVar = 0 /* base flip hor */, flipVerVar = 0 /* base flip ver */;
+        Int16 mode = 1, /* base view */ willContinue = 1 /* continue */, baseRotate = 0 /* base rotate */,
+            flipHorVar = 0 /* base flip hor */, flipVerVar = 0 /* base flip ver */, baseSize = 0 /* base size */,
+            baseDenoise = 0 /* base denoise*/;
         NetworkStream stream;
         List<string> resizeList = new List<string> {
             "100%",
@@ -25,8 +26,10 @@ namespace RoboGUI
             "25%"
         };
         List<string> noiseFilterList = new List<string> {
+            "None",
             "Gausian noise filter",
-            "////"
+            "Median noise filter",
+            "Bilateral noise filter"
         };
         List<string> paletteList = new List<string>
         {
@@ -80,6 +83,18 @@ namespace RoboGUI
             client.Dispose();
         }
 
+        void sendByte()
+        {
+            controlBytes[0] = Convert.ToByte(mode);
+            controlBytes[1] = Convert.ToByte(willContinue);
+            controlBytes[2] = Convert.ToByte(baseRotate);
+            controlBytes[3] = Convert.ToByte(flipHorVar);
+            controlBytes[4] = Convert.ToByte(flipVerVar);
+            controlBytes[5] = Convert.ToByte(baseSize);
+            controlBytes[6] = Convert.ToByte(baseDenoise);
+            stream.Write(controlBytes);
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -98,12 +113,7 @@ namespace RoboGUI
         private async void stopBroadcast_Click(object sender, EventArgs e)
         {
             willContinue = 0;
-            controlBytes[0] = Convert.ToByte(mode);
-            controlBytes[1] = Convert.ToByte(willContinue);
-            controlBytes[2] = Convert.ToByte(baseRotate);
-            controlBytes[3] = Convert.ToByte(flipHorVar);
-            controlBytes[4] = Convert.ToByte(flipVerVar);
-            stream.Write(controlBytes);
+            sendByte();
         }
 
         private void modeView_Click(object sender, EventArgs e)
@@ -116,12 +126,7 @@ namespace RoboGUI
             {
                 mode = 0;
             }
-            controlBytes[0] = Convert.ToByte(mode);
-            controlBytes[1] = Convert.ToByte(willContinue);
-            controlBytes[2] = Convert.ToByte(baseRotate);
-            controlBytes[3] = Convert.ToByte(flipHorVar);
-            controlBytes[4] = Convert.ToByte(flipVerVar);
-            stream.Write(controlBytes);
+            sendByte();
         }
 
         private void rotateView_Click(object sender, EventArgs e)
@@ -131,12 +136,7 @@ namespace RoboGUI
             {
                 baseRotate = 0;
             }
-            controlBytes[0] = Convert.ToByte(mode);
-            controlBytes[1] = Convert.ToByte(willContinue);
-            controlBytes[2] = Convert.ToByte(baseRotate);
-            controlBytes[3] = Convert.ToByte(flipHorVar);
-            controlBytes[4] = Convert.ToByte(flipVerVar);
-            stream.Write(controlBytes);
+            sendByte();
         }
 
         private void flipHor_CheckedChanged(object sender, EventArgs e)
@@ -145,15 +145,11 @@ namespace RoboGUI
             {
                 flipHorVar = 1;
             }
-            else if (flipHorVar == 1) {
+            else if (flipHorVar == 1)
+            {
                 flipHorVar = 0;
             }
-            controlBytes[0] = Convert.ToByte(mode);
-            controlBytes[1] = Convert.ToByte(willContinue);
-            controlBytes[2] = Convert.ToByte(baseRotate);
-            controlBytes[3] = Convert.ToByte(flipHorVar);
-            controlBytes[4] = Convert.ToByte(flipVerVar);
-            stream.Write(controlBytes);
+            sendByte();
         }
 
         private void flipVer_CheckedChanged(object sender, EventArgs e)
@@ -166,12 +162,48 @@ namespace RoboGUI
             {
                 flipVerVar = 0;
             }
-            controlBytes[0] = Convert.ToByte(mode);
-            controlBytes[1] = Convert.ToByte(willContinue);
-            controlBytes[2] = Convert.ToByte(baseRotate);
-            controlBytes[3] = Convert.ToByte(flipHorVar);
-            controlBytes[4] = Convert.ToByte(flipVerVar);
-            stream.Write(controlBytes);
+            sendByte();
+        }
+
+        private void resizeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (resizeComboBox.Text == "100%")
+            {
+                baseSize = 0;
+            }
+            else if (resizeComboBox.Text == "75%")
+            {
+                baseSize = 1;
+            }
+            else if (resizeComboBox.Text == "50%")
+            {
+                baseSize = 2;
+            }
+            else if (resizeComboBox.Text == "25%")
+            {
+                baseSize = 3;
+            }
+            sendByte();
+        }
+
+        private void noiseFilterComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (noiseFilterComboBox.Text == "None") {
+                baseDenoise = 0;
+            }
+            else if (noiseFilterComboBox.Text == "Gausian noise filter")
+            {
+                baseDenoise = 1;
+            }
+            else if (noiseFilterComboBox.Text == "Median noise filter")
+            {
+                baseDenoise = 2;
+            }
+            else if (noiseFilterComboBox.Text == "Bilateral noise filter")
+            {
+                baseDenoise = 3;
+            }
+            sendByte();
         }
     }
 }

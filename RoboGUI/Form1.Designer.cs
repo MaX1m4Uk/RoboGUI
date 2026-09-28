@@ -125,6 +125,7 @@
             resizeComboBox.Name = "resizeComboBox";
             resizeComboBox.Size = new Size(121, 23);
             resizeComboBox.TabIndex = 7;
+            resizeComboBox.SelectedIndexChanged += resizeComboBox_SelectedIndexChanged;
             // 
             // noiseFilterComboBox
             // 
@@ -133,6 +134,7 @@
             noiseFilterComboBox.Name = "noiseFilterComboBox";
             noiseFilterComboBox.Size = new Size(121, 23);
             noiseFilterComboBox.TabIndex = 8;
+            noiseFilterComboBox.SelectedIndexChanged += noiseFilterComboBox_SelectedIndexChanged;
             // 
             // binaryCheckBox
             // 

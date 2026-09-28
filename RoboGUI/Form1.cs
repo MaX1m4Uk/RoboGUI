@@ -10,15 +10,14 @@ namespace RoboGUI
     {
         TcpListener server = null;
         byte[] sizeBytes = new byte[4];
-        byte[] controlBytes = new byte[2];
+        byte[] controlBytes = new byte[5];
         Int32 port = 13000;
         IPAddress localAddr = IPAddress.Parse("127.0.0.1");
         Process pythonProcess;
         TcpClient client;
-        Int16 mode = 1; // base view
-        Int16 willContinue = 1; // continue
+        Int16 mode = 1, /* base view */ willContinue = 1 /* continue */, baseRotate = 0 /* base rotate */, 
+            flipHorVar = 0 /* base flip hor */, flipVerVar = 0 /* base flip ver */;
         NetworkStream stream;
-
         List<string> resizeList = new List<string> {
             "100%",
             "75%",
@@ -101,6 +100,9 @@ namespace RoboGUI
             willContinue = 0;
             controlBytes[0] = Convert.ToByte(mode);
             controlBytes[1] = Convert.ToByte(willContinue);
+            controlBytes[2] = Convert.ToByte(baseRotate);
+            controlBytes[3] = Convert.ToByte(flipHorVar);
+            controlBytes[4] = Convert.ToByte(flipVerVar);
             stream.Write(controlBytes);
         }
 
@@ -110,11 +112,65 @@ namespace RoboGUI
             {
                 mode = 1;
             }
-            else if (mode == 1) {
+            else if (mode == 1)
+            {
                 mode = 0;
             }
             controlBytes[0] = Convert.ToByte(mode);
             controlBytes[1] = Convert.ToByte(willContinue);
+            controlBytes[2] = Convert.ToByte(baseRotate);
+            controlBytes[3] = Convert.ToByte(flipHorVar);
+            controlBytes[4] = Convert.ToByte(flipVerVar);
+            stream.Write(controlBytes);
+        }
+
+        private void rotateView_Click(object sender, EventArgs e)
+        {
+            baseRotate++;
+            if (baseRotate == 4)
+            {
+                baseRotate = 0;
+            }
+            controlBytes[0] = Convert.ToByte(mode);
+            controlBytes[1] = Convert.ToByte(willContinue);
+            controlBytes[2] = Convert.ToByte(baseRotate);
+            controlBytes[3] = Convert.ToByte(flipHorVar);
+            controlBytes[4] = Convert.ToByte(flipVerVar);
+            stream.Write(controlBytes);
+        }
+
+        private void flipHor_CheckedChanged(object sender, EventArgs e)
+        {
+            if (flipHorVar == 0)
+            {
+                flipHorVar = 1;
+            }
+            else if (flipHorVar == 1) {
+                flipHorVar = 0;
+            }
+            controlBytes[0] = Convert.ToByte(mode);
+            controlBytes[1] = Convert.ToByte(willContinue);
+            controlBytes[2] = Convert.ToByte(baseRotate);
+            controlBytes[3] = Convert.ToByte(flipHorVar);
+            controlBytes[4] = Convert.ToByte(flipVerVar);
+            stream.Write(controlBytes);
+        }
+
+        private void flipVer_CheckedChanged(object sender, EventArgs e)
+        {
+            if (flipVerVar == 0)
+            {
+                flipVerVar = 1;
+            }
+            else if (flipVerVar == 1)
+            {
+                flipVerVar = 0;
+            }
+            controlBytes[0] = Convert.ToByte(mode);
+            controlBytes[1] = Convert.ToByte(willContinue);
+            controlBytes[2] = Convert.ToByte(baseRotate);
+            controlBytes[3] = Convert.ToByte(flipHorVar);
+            controlBytes[4] = Convert.ToByte(flipVerVar);
             stream.Write(controlBytes);
         }
     }

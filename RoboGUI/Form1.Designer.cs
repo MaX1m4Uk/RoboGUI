@@ -94,6 +94,7 @@
             rotateView.TabIndex = 4;
             rotateView.Text = "Rotate";
             rotateView.UseVisualStyleBackColor = true;
+            rotateView.Click += rotateView_Click;
             // 
             // flipHor
             // 
@@ -104,6 +105,7 @@
             flipHor.TabIndex = 5;
             flipHor.Text = "Flip Horizontal";
             flipHor.UseVisualStyleBackColor = true;
+            flipHor.CheckedChanged += flipHor_CheckedChanged;
             // 
             // flipVer
             // 
@@ -114,6 +116,7 @@
             flipVer.TabIndex = 6;
             flipVer.Text = "Flip Vertical";
             flipVer.UseVisualStyleBackColor = true;
+            flipVer.CheckedChanged += flipVer_CheckedChanged;
             // 
             // resizeComboBox
             // 

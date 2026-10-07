@@ -10,14 +10,15 @@ namespace RoboGUI
     {
         TcpListener server = null;
         byte[] sizeBytes = new byte[4];
-        byte[] controlBytes = new byte[7];
+        byte[] controlBytes = new byte[13];
         Int32 port = 13000;
         IPAddress localAddr = IPAddress.Parse("127.0.0.1");
         Process pythonProcess;
         TcpClient client;
         Int16 mode = 1, /* base view */ willContinue = 1 /* continue */, baseRotate = 0 /* base rotate */,
             flipHorVar = 0 /* base flip hor */, flipVerVar = 0 /* base flip ver */, baseSize = 0 /* base size */,
-            baseDenoise = 0 /* base denoise*/;
+            baseDenoise = 0 /* base denoise*/, baseColor = 0 /* base color */, baseGray = 0 /* base gray*/, isBinaryPic = 0 /* is binary pic */,
+            threshlord = 0 /* theshlord level */, isMorfolofy = 0 /* base morfology*/, baseMorfology = 0 /* base morfology */;
         NetworkStream stream;
         List<string> resizeList = new List<string> {
             "100%",
@@ -92,6 +93,12 @@ namespace RoboGUI
             controlBytes[4] = Convert.ToByte(flipVerVar);
             controlBytes[5] = Convert.ToByte(baseSize);
             controlBytes[6] = Convert.ToByte(baseDenoise);
+            controlBytes[7] = Convert.ToByte(baseColor);
+            controlBytes[8] = Convert.ToByte(baseGray);
+            controlBytes[9] = Convert.ToByte(isBinaryPic);
+            controlBytes[10] = Convert.ToByte(threshlord);
+            controlBytes[11] = Convert.ToByte(isMorfolofy);
+            controlBytes[12] = Convert.ToByte(baseMorfology);
             stream.Write(controlBytes);
         }
 
@@ -188,7 +195,8 @@ namespace RoboGUI
 
         private void noiseFilterComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (noiseFilterComboBox.Text == "None") {
+            if (noiseFilterComboBox.Text == "None")
+            {
                 baseDenoise = 0;
             }
             else if (noiseFilterComboBox.Text == "Gausian noise filter")
@@ -202,6 +210,91 @@ namespace RoboGUI
             else if (noiseFilterComboBox.Text == "Bilateral noise filter")
             {
                 baseDenoise = 3;
+            }
+            sendByte();
+        }
+
+        private void paletteComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (paletteComboBox.Text == "Original")
+            {
+                baseColor = 0;
+            }
+            else if (paletteComboBox.Text == "RGB")
+            {
+                baseColor = 1;
+            }
+            else if (paletteComboBox.Text == "HSV")
+            {
+                baseColor = 2;
+            }
+            else if (paletteComboBox.Text == "JET")
+            {
+                baseColor = 3;
+            }
+            sendByte();
+        }
+
+        private void grayscaleCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (baseGray == 0)
+            {
+                baseGray = 1;
+            }
+            else if (baseGray == 1)
+            {
+                baseGray = 0;
+            }
+            sendByte();
+        }
+
+        private void binarizationPic_Scroll(object sender, EventArgs e)
+        {
+            threshlord = (short)binarizationPic.Value;
+            sendByte();
+        }
+
+        private void binaryCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isBinaryPic == 0)
+            {
+                isBinaryPic = 1;
+            }
+            else if (isBinaryPic == 1)
+            {
+                isBinaryPic = 0;
+            }
+            sendByte();
+        }
+
+        private void morfologyCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isMorfolofy == 0)
+            {
+                isMorfolofy = 1;
+            }
+            else if (isMorfolofy == 1) {
+                isMorfolofy = 0;
+            }
+            sendByte();
+        }
+
+        private void morfologyComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (morfologyComboBox.Text == "Erosion")
+            {
+                baseMorfology = 0;
+            }
+            else if (morfologyComboBox.Text == "Dilation")
+            {
+                baseMorfology = 1;
+            }
+            else if (morfologyComboBox.Text == "Opening")
+            {
+                baseMorfology = 2;
+            }
+            else if (morfologyComboBox.Text == "Closing") {
+                baseMorfology = 3;
             }
             sendByte();
         }

@@ -40,11 +40,11 @@
             binaryCheckBox = new CheckBox();
             grayscaleCheckBox = new CheckBox();
             paletteComboBox = new ComboBox();
-            trackBar1 = new TrackBar();
+            binarizationPic = new TrackBar();
             morfologyCheckBox = new CheckBox();
             morfologyComboBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)videoView).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)binarizationPic).BeginInit();
             SuspendLayout();
             // 
             // startBroadcast
@@ -69,7 +69,7 @@
             // 
             // modeView
             // 
-            modeView.Location = new Point(12, 502);
+            modeView.Location = new Point(168, 399);
             modeView.Name = "modeView";
             modeView.Size = new Size(150, 46);
             modeView.TabIndex = 2;
@@ -88,7 +88,7 @@
             // 
             // rotateView
             // 
-            rotateView.Location = new Point(12, 554);
+            rotateView.Location = new Point(168, 451);
             rotateView.Name = "rotateView";
             rotateView.Size = new Size(150, 46);
             rotateView.TabIndex = 4;
@@ -99,7 +99,7 @@
             // flipHor
             // 
             flipHor.AutoSize = true;
-            flipHor.Location = new Point(12, 606);
+            flipHor.Location = new Point(324, 451);
             flipHor.Name = "flipHor";
             flipHor.Size = new Size(103, 19);
             flipHor.TabIndex = 5;
@@ -110,7 +110,7 @@
             // flipVer
             // 
             flipVer.AutoSize = true;
-            flipVer.Location = new Point(12, 631);
+            flipVer.Location = new Point(324, 476);
             flipVer.Name = "flipVer";
             flipVer.Size = new Size(86, 19);
             flipVer.TabIndex = 6;
@@ -121,7 +121,7 @@
             // resizeComboBox
             // 
             resizeComboBox.FormattingEnabled = true;
-            resizeComboBox.Location = new Point(168, 398);
+            resizeComboBox.Location = new Point(1131, 447);
             resizeComboBox.Name = "resizeComboBox";
             resizeComboBox.Size = new Size(121, 23);
             resizeComboBox.TabIndex = 7;
@@ -130,7 +130,7 @@
             // noiseFilterComboBox
             // 
             noiseFilterComboBox.FormattingEnabled = true;
-            noiseFilterComboBox.Location = new Point(168, 427);
+            noiseFilterComboBox.Location = new Point(1131, 476);
             noiseFilterComboBox.Name = "noiseFilterComboBox";
             noiseFilterComboBox.Size = new Size(121, 23);
             noiseFilterComboBox.TabIndex = 8;
@@ -139,57 +139,63 @@
             // binaryCheckBox
             // 
             binaryCheckBox.AutoSize = true;
-            binaryCheckBox.Location = new Point(12, 656);
+            binaryCheckBox.Location = new Point(605, 399);
             binaryCheckBox.Name = "binaryCheckBox";
             binaryCheckBox.Size = new Size(59, 19);
             binaryCheckBox.TabIndex = 9;
             binaryCheckBox.Text = "Binary";
             binaryCheckBox.UseVisualStyleBackColor = true;
+            binaryCheckBox.CheckedChanged += binaryCheckBox_CheckedChanged;
             // 
             // grayscaleCheckBox
             // 
             grayscaleCheckBox.AutoSize = true;
-            grayscaleCheckBox.Location = new Point(77, 656);
+            grayscaleCheckBox.Location = new Point(605, 424);
             grayscaleCheckBox.Name = "grayscaleCheckBox";
             grayscaleCheckBox.Size = new Size(76, 19);
             grayscaleCheckBox.TabIndex = 10;
             grayscaleCheckBox.Text = "Grayscale";
             grayscaleCheckBox.UseVisualStyleBackColor = true;
+            grayscaleCheckBox.CheckedChanged += grayscaleCheckBox_CheckedChanged;
             // 
             // paletteComboBox
             // 
             paletteComboBox.FormattingEnabled = true;
-            paletteComboBox.Location = new Point(168, 456);
+            paletteComboBox.Location = new Point(1131, 505);
             paletteComboBox.Name = "paletteComboBox";
             paletteComboBox.Size = new Size(121, 23);
             paletteComboBox.TabIndex = 11;
+            paletteComboBox.SelectedIndexChanged += paletteComboBox_SelectedIndexChanged;
             // 
-            // trackBar1
+            // binarizationPic
             // 
-            trackBar1.LargeChange = 15;
-            trackBar1.Location = new Point(295, 398);
-            trackBar1.Maximum = 255;
-            trackBar1.Name = "trackBar1";
-            trackBar1.Size = new Size(565, 45);
-            trackBar1.TabIndex = 13;
+            binarizationPic.LargeChange = 15;
+            binarizationPic.Location = new Point(687, 399);
+            binarizationPic.Maximum = 255;
+            binarizationPic.Name = "binarizationPic";
+            binarizationPic.Size = new Size(565, 45);
+            binarizationPic.TabIndex = 13;
+            binarizationPic.Scroll += binarizationPic_Scroll;
             // 
             // morfologyCheckBox
             // 
             morfologyCheckBox.AutoSize = true;
-            morfologyCheckBox.Location = new Point(159, 656);
+            morfologyCheckBox.Location = new Point(1131, 621);
             morfologyCheckBox.Name = "morfologyCheckBox";
             morfologyCheckBox.Size = new Size(82, 19);
             morfologyCheckBox.TabIndex = 14;
             morfologyCheckBox.Text = "Morfology";
             morfologyCheckBox.UseVisualStyleBackColor = true;
+            morfologyCheckBox.CheckedChanged += morfologyCheckBox_CheckedChanged;
             // 
             // morfologyComboBox
             // 
             morfologyComboBox.FormattingEnabled = true;
-            morfologyComboBox.Location = new Point(168, 485);
+            morfologyComboBox.Location = new Point(1131, 646);
             morfologyComboBox.Name = "morfologyComboBox";
             morfologyComboBox.Size = new Size(121, 23);
             morfologyComboBox.TabIndex = 15;
+            morfologyComboBox.SelectedIndexChanged += morfologyComboBox_SelectedIndexChanged;
             // 
             // Form1
             // 
@@ -198,7 +204,7 @@
             ClientSize = new Size(1264, 681);
             Controls.Add(morfologyComboBox);
             Controls.Add(morfologyCheckBox);
-            Controls.Add(trackBar1);
+            Controls.Add(binarizationPic);
             Controls.Add(paletteComboBox);
             Controls.Add(grayscaleCheckBox);
             Controls.Add(binaryCheckBox);
@@ -215,7 +221,7 @@
             Name = "Form1";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)videoView).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)binarizationPic).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -234,7 +240,7 @@
         private CheckBox binaryCheckBox;
         private CheckBox grayscaleCheckBox;
         private ComboBox paletteComboBox;
-        private TrackBar trackBar1;
+        private TrackBar binarizationPic;
         private CheckBox morfologyCheckBox;
         private ComboBox morfologyComboBox;
     }

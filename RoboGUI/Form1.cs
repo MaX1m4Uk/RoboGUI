@@ -48,7 +48,7 @@ namespace RoboGUI
         async Task GetStreamAsync()
         {
             server.Start();
-            pythonProcess = Process.Start("D:\\Global Env\\openCV\\python.exe", "D:\\openCVLab2.py");
+            pythonProcess = Process.Start("D:\\Global Env\\openCV\\python.exe", "D:\\C#\\RoboGUI\\openCVLab2.py");
             client = await server.AcceptTcpClientAsync();
 
             stream = client.GetStream();

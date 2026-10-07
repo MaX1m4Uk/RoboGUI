@@ -43,6 +43,7 @@
             binarizationPic = new TrackBar();
             morfologyCheckBox = new CheckBox();
             morfologyComboBox = new ComboBox();
+            colorPresetCBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)videoView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)binarizationPic).BeginInit();
             SuspendLayout();
@@ -197,11 +198,21 @@
             morfologyComboBox.TabIndex = 15;
             morfologyComboBox.SelectedIndexChanged += morfologyComboBox_SelectedIndexChanged;
             // 
+            // colorPresetCBox
+            // 
+            colorPresetCBox.FormattingEnabled = true;
+            colorPresetCBox.Location = new Point(605, 449);
+            colorPresetCBox.Name = "colorPresetCBox";
+            colorPresetCBox.Size = new Size(121, 23);
+            colorPresetCBox.TabIndex = 16;
+            colorPresetCBox.SelectedIndexChanged += colorPresetCBox_SelectedIndexChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1264, 681);
+            Controls.Add(colorPresetCBox);
             Controls.Add(morfologyComboBox);
             Controls.Add(morfologyCheckBox);
             Controls.Add(binarizationPic);
@@ -243,5 +254,6 @@
         private TrackBar binarizationPic;
         private CheckBox morfologyCheckBox;
         private ComboBox morfologyComboBox;
+        private ComboBox colorPresetCBox;
     }
 }

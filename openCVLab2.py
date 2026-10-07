@@ -167,7 +167,7 @@ def revokeConnection():
 
 client = socket.socket()
 client.connect(("127.0.0.1", 13000))
-fps = 10 # cap.get(cv2.CAP_PROP_FPS)
+fps = cap.get(cv2.CAP_PROP_FPS) # 10
 frame_time = 1 / fps
 while cap.isOpened():
     while True:

@@ -10,7 +10,7 @@ namespace RoboGUI
     {
         TcpListener server = null;
         byte[] sizeBytes = new byte[4];
-        byte[] controlBytes = new byte[13];
+        byte[] controlBytes = new byte[14];
         Int32 port = 13000;
         IPAddress localAddr = IPAddress.Parse("127.0.0.1");
         Process pythonProcess;
@@ -18,7 +18,8 @@ namespace RoboGUI
         Int16 mode = 1, /* base view */ willContinue = 1 /* continue */, baseRotate = 0 /* base rotate */,
             flipHorVar = 0 /* base flip hor */, flipVerVar = 0 /* base flip ver */, baseSize = 0 /* base size */,
             baseDenoise = 0 /* base denoise*/, baseColor = 0 /* base color */, baseGray = 0 /* base gray*/, isBinaryPic = 0 /* is binary pic */,
-            threshlord = 0 /* theshlord level */, isMorfolofy = 0 /* base morfology*/, baseMorfology = 0 /* base morfology */;
+            threshlord = 0 /* theshlord level */, isMorfolofy = 0 /* base morfology*/, baseMorfology = 0 /* base morfology */,
+            baseColorPreset = 0 /* base color preset*/;
         NetworkStream stream;
         List<string> resizeList = new List<string> {
             "100%",
@@ -44,6 +45,14 @@ namespace RoboGUI
             "Dilation",
             "Opening",
             "Closing"
+        };
+        List<string> colorPresetsList = new List<string> {
+            "None",
+            "Red",
+            "Yellow",
+            "Green",
+            "Blue",
+            "Purple"
         };
         async Task GetStreamAsync()
         {
@@ -99,6 +108,7 @@ namespace RoboGUI
             controlBytes[10] = Convert.ToByte(threshlord);
             controlBytes[11] = Convert.ToByte(isMorfolofy);
             controlBytes[12] = Convert.ToByte(baseMorfology);
+            controlBytes[13] = Convert.ToByte(baseColorPreset);
             stream.Write(controlBytes);
         }
 
@@ -110,6 +120,7 @@ namespace RoboGUI
             noiseFilterComboBox.DataSource = noiseFilterList;
             paletteComboBox.DataSource = paletteList;
             morfologyComboBox.DataSource = morfologyStyleList;
+            colorPresetCBox.DataSource = colorPresetsList;
         }
 
         private async void startBroadcast_Click(object sender, EventArgs e)
@@ -125,11 +136,8 @@ namespace RoboGUI
 
         private void modeView_Click(object sender, EventArgs e)
         {
-            if (mode == 0)
-            {
-                mode = 1;
-            }
-            else if (mode == 1)
+            mode++;
+            if (mode == 4)
             {
                 mode = 0;
             }
@@ -273,7 +281,8 @@ namespace RoboGUI
             {
                 isMorfolofy = 1;
             }
-            else if (isMorfolofy == 1) {
+            else if (isMorfolofy == 1)
+            {
                 isMorfolofy = 0;
             }
             sendByte();
@@ -293,8 +302,37 @@ namespace RoboGUI
             {
                 baseMorfology = 2;
             }
-            else if (morfologyComboBox.Text == "Closing") {
+            else if (morfologyComboBox.Text == "Closing")
+            {
                 baseMorfology = 3;
+            }
+            sendByte();
+        }
+
+        private void colorPresetCBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (colorPresetCBox.Text == "None")
+            {
+                baseColorPreset = 0;
+            }
+            else if (colorPresetCBox.Text == "Red")
+            {
+                baseColorPreset = 1;
+            }
+            else if (colorPresetCBox.Text == "Yellow")
+            {
+                baseColorPreset = 2;
+            }
+            else if (colorPresetCBox.Text == "Green")
+            {
+                baseColorPreset = 3;
+            }
+            else if (colorPresetCBox.Text == "Blue")
+            {
+                baseColorPreset = 4;
+            }
+            else if (colorPresetCBox.Text == "Purple") {
+                baseColorPreset = 5;
             }
             sendByte();
         }

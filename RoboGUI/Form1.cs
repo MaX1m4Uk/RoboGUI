@@ -15,7 +15,7 @@ namespace RoboGUI
         IPAddress localAddr = IPAddress.Parse("127.0.0.1");
         Process pythonProcess;
         TcpClient client;
-        Int16 mode = 1, /* base view */ willContinue = 1 /* continue */, baseRotate = 0 /* base rotate */,
+        Int16 mode = 0, /* base view */ willContinue = 1 /* continue */, baseRotate = 0 /* base rotate */,
             flipHorVar = 0 /* base flip hor */, flipVerVar = 0 /* base flip ver */, baseSize = 0 /* base size */,
             baseDenoise = 0 /* base denoise*/, baseColor = 0 /* base color */, baseGray = 0 /* base gray*/, isBinaryPic = 0 /* is binary pic */,
             threshlord = 0 /* theshlord level */, isMorfolofy = 0 /* base morfology*/, baseMorfology = 0 /* base morfology */,
@@ -51,6 +51,7 @@ namespace RoboGUI
             "Red",
             "Yellow",
             "Green",
+            "Cyan",
             "Blue",
             "Purple"
         };
@@ -58,6 +59,7 @@ namespace RoboGUI
         {
             server.Start();
             pythonProcess = Process.Start("D:\\Global Env\\openCV\\python.exe", "D:\\C#\\RoboGUI\\openCVLab2.py");
+            //pythonProcess = Process.Start("cmd.exe","/k \"\"D:\\Global Env\\openCV\\python.exe\" \"D:\\C#\\RoboGUI\\openCVLab2.py\"\"");
             client = await server.AcceptTcpClientAsync();
 
             stream = client.GetStream();
@@ -89,6 +91,7 @@ namespace RoboGUI
                 }
             }
             pythonProcess.Kill();
+            //pythonProcess.Kill(true);
             server.Stop();
             client.Dispose();
         }
@@ -327,12 +330,16 @@ namespace RoboGUI
             {
                 baseColorPreset = 3;
             }
-            else if (colorPresetCBox.Text == "Blue")
+            else if (colorPresetCBox.Text == "Cyan")
             {
                 baseColorPreset = 4;
             }
-            else if (colorPresetCBox.Text == "Purple") {
+            else if (colorPresetCBox.Text == "Blue")
+            {
                 baseColorPreset = 5;
+            }
+            else if (colorPresetCBox.Text == "Purple") {
+                baseColorPreset = 6;
             }
             sendByte();
         }

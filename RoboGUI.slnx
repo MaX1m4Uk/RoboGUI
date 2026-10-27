@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="RoboGUI/RoboGUI.csproj" />
+  <Project Path="RoboGUILineF/RoboGUILineF.csproj" Id="382424c1-8c4a-48af-aa04-41f3a5fc4884" />
 </Solution>
